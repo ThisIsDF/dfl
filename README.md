@@ -2,7 +2,7 @@
 
 ## video face extractor
 
-Automates the extracting of faces above a certain pixel height from videos.
+Automates the extracting of frames that contain faces above a certain pixel height from videos.
 
 
 ## workspace menu
