@@ -9,21 +9,25 @@ import dlib
 from tqdm import tqdm
 import os
 
+directory = r"C:\path\to\video\files"
+savepath = r"C:\path\to\workspace\for\frames"
+facesize = 400    # minimum face size to save frame
+blur = 15         # maximum blurriness to save frame (lower value is higher frame blur)
+
 detector = dlib.cnn_face_detection_model_v1("./mmod_human_face_detector.dat")
 
 count = 0
 skip = 0
-skipfiles = 0
-directory = "Z:\SERIES\Big Sky (2020)\Season 1" 
-savepath = "D:\\recycle\\tr\\workspace-KW\\data_src\\frames\\"
+skipfiles_count = 0
+skipfiles = -1
 
 for filename in os.listdir(directory):
-    skipfiles += 1
-    if skipfiles <= 5:
+    skipfiles_count += 1
+    if skipfiles_count <= skipfiles:
        continue
 
     print(filename)
-    vs = FileVideoStream(directory + '\\' + filename).start()
+    vs = FileVideoStream(os.path.join(directory, filename)).start()
 
     framecount = int(vs.stream.get(cv2.CAP_PROP_FRAME_COUNT) ) 
     frameprogress = tqdm(total=framecount, desc="Frame Progress")
@@ -40,13 +44,13 @@ for filename in os.listdir(directory):
             x2 = faceRect.rect.right()
             y2 = faceRect.rect.bottom()
             h = abs(y2 - y1)
-            if h > 400:
+            if h >= facesize:
                  #print(savepath + 'frame' + str(count) + '.jpg')
                  if skip % 1 == 0:
                     fm = cv2.Laplacian(gray, cv2.CV_64F).var()
-                    if fm > 15:
-                       cv2.imwrite(savepath + 'frame' + str(count) + '.jpg', frame)
-                    count += 1
+                    if fm > blur:
+                       cv2.imwrite(fsavepath + '\\' + 'frame' + str(count) + '.jpg', frame)
+                       count += 1
                  #cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
                  
                  skip += 1
