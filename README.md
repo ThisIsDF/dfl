@@ -9,5 +9,5 @@ Automates the extracting of frames that contain faces above a certain pixel heig
 
 Adds a workspace selection before starting any DFL script.
 
-Workspace folders need to be named as workspace-<any name>
+Workspace folders need to be named as workspace-&lt;any name&gt;
 
